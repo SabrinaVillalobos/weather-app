@@ -3,26 +3,29 @@ import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
 import Location from './Location';
 import WeatherData from './WeatherData';
-import transformWeather from '../../services/transformWeather.js';
-/*import {CLOUD,
+import transformWeather from './../../services/transformWeather';
+/*
+import {CLOUD,
         CLOUDY,
         SUN,
         RAIN,
         SNOW,
         WINDY
-        } from '../constant/weathers.js';*/
-const api_key = '3964db249e6c82ee05522ad1fa60775e';
-/*const city = 'Santiago,scl';*/
-const url = 'http://api.openweathermap.org/data/2.5/weather';
+} from './../../constant/weathers';
+*/
+import './styles.css';
 
+const api_key = '3964db249e6c82ee05522ad1fa60775e';
+//const city = 'Santiago,scl';
+const url = 'http://api.openweathermap.org/data/2.5/weather';
 /*
 const data1 = {
   temperature: 32,
   weatherState: SUN,
   humidity: 2,
   wind: '10 m/s',
-}*/
-/*
+}
+
 const data2 = {
   temperature: 10,
   weatherState: SNOW,
@@ -42,13 +45,13 @@ const WeatherLocation = () => (
 
 class WeatherLocation extends Component {
 
-  constructor (city) {
+  constructor ( {city} ) {
     super();
     this.state = {
       city,
       data: null
     }
-    console.log('constructor');
+    console.log('Constructor');
   }
 
 
@@ -57,12 +60,12 @@ class WeatherLocation extends Component {
       data: data2
     })
     */
-    
 
-componentWillMount(){
-  //console.log('ComponentWillMount');
-  const { city } = this.state;
-  const api_weather = `${url}?q=${city}&appid=${api_key}&units=metric`;
+
+  componentWillMount() {
+    //console.log('ComponentWillMount');
+    const { city } = this.state;
+    const api_weather = `${url}?q=${city}&appid=${api_key}&units=metric`;
     fetch(api_weather).then(data => {
       console.log(data);
       return data.json();
@@ -70,35 +73,35 @@ componentWillMount(){
       const data = transformWeather(weather_data);
       this.setState({ data });
     })
-}
-/*
-componentDidMount(){
-  console.log('ComponentDidMount');
-}
+  }
+  /*
+  componentDidMount() {
+    console.log('ComponentDidMount');
+  }
 
-componentWillUpdate(){
-  console.log('ComponentWillUpdate');
-}
+  componentWillUpdate() {
+    console.log('ComponentWillUpdate');
+  }
 
-componentDidUpdate(){
-  console.log('ComponentDidUpdate');
-}
-*/
+  componentDidUpdate() {
+    console.log('componentDidUpdate');
+  }
+  */
+
   render = () => {
-    console.log('Render');
-    const { city, data } = this.state;
+  console.log('Render');
+  const { city, data } = this.state;
     return (
-    <div className='weatherLocation'>
-      <Location city = { city }/>
-      { data != null ? <WeatherData data = { data }/>
-      : ('<CircularProgress size={60} thickness={7} />')
-    }
-    </div>
+      <div className='weatherLocation'>
+        <Location city = { city }/>
+        { data !== null ? <WeatherData data = { data }/> : <CircularProgress size={60} thickness={7} />
+        }
+      </div>
     )
   }
 }
 
-WeatherLocation.PropTypes = {
+WeatherLocation.propTypes = {
   city: PropTypes.string,
 }
 
