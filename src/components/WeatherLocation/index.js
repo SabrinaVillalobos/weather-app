@@ -1,110 +1,86 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import CircularProgress from 'material-ui/CircularProgress';
-import Location from './Location';
+import Paper from 'material-ui/Paper';
+import Location from './Location.js';
 import WeatherData from './WeatherData';
-import transformWeather from './../../services/transformWeather';
-/*
-import {CLOUD,
-        CLOUDY,
-        SUN,
-        RAIN,
-        SNOW,
-        WINDY
-} from './../../constant/weathers';
-*/
-import './styles.css';
+import transformWeather from './../../services/transformWeather.js';
+import {CLOUD, 
+        CLOUDY, 
+        SUN, 
+        RAIN, 
+        SNOW, 
+        WINDY,
+        THUNDER,
+        DRIZZLE
+      } from './../../constant/weathers.js';
+import './styles.css'
 
-const api_key = '3964db249e6c82ee05522ad1fa60775e';
-//const city = 'Santiago,scl';
-const url = 'http://api.openweathermap.org/data/2.5/weather';
-/*
-const data1 = {
-  temperature: 32,
-  weatherState: SUN,
-  humidity: 2,
-  wind: '10 m/s',
-}
 
-const data2 = {
-  temperature: 10,
-  weatherState: SNOW,
-  humidity: 98,
-  wind: '70 m/s',
-}
-*/
+//creando const para llamar a la api//
+const api_key = "373e97ad7230750dc3e40b68c342781d";
+//const location = 'Santiago,scl'//
+const url = `http://api.openweathermap.org/data/2.5/weather`;
+//const api_weather = `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${api_key}&units=metric`;
 
-/*
-const WeatherLocation = () => (
-    <div className='weatherLocation'>
-      <Location city = {'Santiago'}/>
-      <WeatherData data = {data}/>
-    </div>
-  )
-*/
 
 class WeatherLocation extends Component {
-
-  constructor ( {city} ) {
-    super();
+  constructor({ city }) {
+    super(); //dentro del constructor
     this.state = {
       city,
       data: null
     }
-    console.log('Constructor');
   }
 
 
-    /*
-    this.setState ({
-      data: data2
-    })
-    */
-
-
+//antes del render
   componentWillMount() {
-    //console.log('ComponentWillMount');
-    const { city } = this.state;
+
+    const { city } = this.state
     const api_weather = `${url}?q=${city}&appid=${api_key}&units=metric`;
-    fetch(api_weather).then(data => {
+
+    fetch (api_weather).then(data => {
       console.log(data);
       return data.json();
     }).then(weather_data => {
       const data = transformWeather(weather_data);
-      this.setState({ data });
-    })
-  }
-  /*
-  componentDidMount() {
-    console.log('ComponentDidMount');
-  }
+      this.setState({ data})
+    });
 
-  componentWillUpdate() {
-    console.log('ComponentWillUpdate');
-  }
+    }
 
-  componentDidUpdate() {
-    console.log('componentDidUpdate');
-  }
-  */
+  
 
-  render = () => {
-  console.log('Render');
+    render = () => {
   const { onWeatherLocationClick } = this.props;
-  const { city, data } = this.state;
-    return (
-      <div className='weatherLocation' onClick = {onWeatherLocationClick}>
-        <Location city = { city }/>
-        { data !== null ? <WeatherData data = { data }/> : <CircularProgress size={60} thickness={7} />
-        }
-      </div>
-    )
-  }
+  const { city, data } = this.state; //estoy ahorrando poner this.state dos veces//
+  //de la forma de papel en -MUI
+  const style = {
+  height: 150,
+  width: 350,
+  margin: 20,
+  textAlign: 'center',
+  display: 'inline-block',
+};
+
+      return (
+           <div className='weatherLocation' onClick={onWeatherLocationClick}>
+           <Paper style={style} zDepth={2}>
+     <Location city = { city }/>
+     {data ? <WeatherData data={ data }/> : <CircularProgress size={60} thickness={7} />}
+     </Paper>
+   </div>
+   );
+
+    }
+
+
 }
 
-WeatherLocation.propTypes = {
-  city: PropTypes.string,
+ WeatherLocation.propTypes = {
+  city: PropTypes.string.isRequired,
   onWeatherLocationClick: PropTypes.func,
-}
+ }
 
 export default WeatherLocation;
