@@ -1,35 +1,28 @@
 import React from 'react';
-import WeatherTemperature from './WeatherTemperature';
-import WeatherExtraInfo from './WeatherExtraInfo';
-import PropTypes from 'prop-types';
-//estilos
-import './styles.css';
+import PropTypes from 'prop-types'
+import WeatherTemperature from './WeatherTemperature.js';
+import WeatherExtraInfo from './WeatherExtraInfo.js'
 
-// dia 3
+
+//componente funcional
 const WeatherData = ({ data }) => {
-const { temperature, weatherState, humidity, wind } = data;	
-	return(
+  const { temperature, weatherState, humidity, wind } = data;
+  return (
+    <div className='weatherDataCont'>
+        <WeatherTemperature temperature = {temperature} weatherState= {weatherState} />
+        <WeatherExtraInfo humidity = {humidity} wind = {wind} />
+    </div>
+    )
+    }
 
-	<div className='weatherDataCont'>
-		<WeatherTemperature temperature ={temperature} weatherState={weatherState} />
-		<WeatherExtraInfo humidity = {humidity} wind={wind} />
-		
-
-	</div>
-	);
-};
-
-WeatherData.propTypes = {
-	//shape nos indica un objeto con la forma indicada
-	data: PropTypes.shape({
-		temperature: PropTypes.number.isRequired,
-		weatherState: PropTypes.string.isRequired,
-		humidity: PropTypes.number.isRequired,
-		wind: PropTypes.string.isRequired,
-	}),
-};
+  WeatherData.propTypes ={
+    data: PropTypes.shape({
+      temperature: PropTypes.number.isRequired,
+      weatherState: PropTypes.string.isRequired,
+      humidity: PropTypes.number.isRequired,
+      wind: PropTypes.string.isRequired,
+    })
+  }
 
 
-
-
-export default 	WeatherData;
+export default WeatherData;
